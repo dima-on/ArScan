@@ -49,7 +49,7 @@ mp_pose = mp.solutions.pose
 pose = mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)
 
 
-def body_Detect(Index, frame, landmarks, offset_Y):
+def body_Detect(Index, frame, landmarks, offset_Y, withTop, offsetXTop):
     ySize, xSize = frame.shape[:2]
 
     XFSize, YFSize = 640, 480
@@ -66,7 +66,7 @@ def body_Detect(Index, frame, landmarks, offset_Y):
     hip_left = landmarks[23]
 
     #21/11
-    distanceX = int((shoulder_left[0] - shoulder_right[0]) * (Top_With[Index]))
+    distanceX = int((shoulder_left[0] - shoulder_right[0]) * withTop)
     distanceY = int((hip_left.y - shoulder_left[1]) * int(Top_Height[Index]))
 
 
@@ -83,7 +83,7 @@ def body_Detect(Index, frame, landmarks, offset_Y):
     overlay_image_resized = Top_overlay_image[Index].resize(new_size)
 
 
-    offsetX = int(((distanceX / 100) * Top_Offset_To_X[Index]) * ProcentSizeXOffSet)
+    offsetX = int(((distanceX / 100) * offsetXTop) * ProcentSizeXOffSet)
     offsetY = int(((distanceY / 100) * offset_Y) * ProcentSizeYOffSet)
 
 
@@ -96,7 +96,7 @@ def body_Detect(Index, frame, landmarks, offset_Y):
 
 
     return overlay_image_resized, overlay_position
-def leg_Detect(Index, frame, landmarks, offset_Y, withDown):
+def leg_Detect(Index, frame, landmarks, offset_Y, withDown, offsetXDown):
     ySize, xSize = frame.shape[:2]
 
     XFSize, YFSize = 640, 480
@@ -127,7 +127,7 @@ def leg_Detect(Index, frame, landmarks, offset_Y, withDown):
     overlay_image_resized = Down_overlay_image[Index].resize(new_size)
 
     offsetY = int((distanceY / 100) * offset_Y * ProcentSizeYOffset)
-    offsetX = int((distanceX / 100) * Down_Offset_To_X[Index] * ProcentSizeXOffSet)
+    offsetX = int((distanceX / 100) * offsetXDown * ProcentSizeXOffSet)
 
 
 
@@ -139,7 +139,7 @@ def leg_Detect(Index, frame, landmarks, offset_Y, withDown):
 
 
     return overlay_image_resized, overlay_position
-def resImage(img, indexT, indexD, offsetTop, offset_Down, with_Down):
+def resImage(img, indexT, indexD, offsetTop, offset_Down, with_Down, with_Top, offsetX_Top, offsetDownX):
     startTime = time.time()
     mp_pose = mp.solutions.pose
     pose = mp_pose.Pose()
@@ -159,18 +159,21 @@ def resImage(img, indexT, indexD, offsetTop, offset_Down, with_Down):
 
         annotated_image_bgr = cv2.cvtColor(annotated_image, cv2.COLOR_RGB2BGR)
         if indexT != -1:
-            Top_overlay_image_resized, Top_overlay_position= body_Detect(indexT, image, landmarks, Top_Offset_To_Y[indexT] + int(offsetTop))
-        Down_overlay_image_resized, Down_overlay_position = leg_Detect(indexD, image, landmarks, Down_Offset_To_Y[indexD] + int(offset_Down), Down_With[indexD] + int(with_Down))
+            Top_overlay_image_resized, Top_overlay_position= body_Detect(indexT, image, landmarks, Top_Offset_To_Y[indexT] + int(offsetTop), Top_With[indexT] + int(with_Top), Top_Offset_To_X[indexT] + int(offsetX_Top))
+        if indexD != -1:
+            Down_overlay_image_resized, Down_overlay_position = leg_Detect(indexD, image, landmarks, Down_Offset_To_Y[indexD] + int(offset_Down), Down_With[indexD] + int(with_Down), Down_Offset_To_X[indexD] + int(offsetDownX))
 
         frame_pil = Image.fromarray(cv2.cvtColor(annotated_image_bgr, cv2.COLOR_BGR2RGB))
-
-        frame_pil.paste(Down_overlay_image_resized, Down_overlay_position, Down_overlay_image_resized)
+        if indexD != -1:
+            frame_pil.paste(Down_overlay_image_resized, Down_overlay_position, Down_overlay_image_resized)
         if indexT != -1:
             frame_pil.paste(Top_overlay_image_resized, Top_overlay_position, Top_overlay_image_resized)
 
         annotated_image_bgr = cv2.cvtColor(np.array(frame_pil), cv2.COLOR_RGB2BGR)
 
         frame_pil = Image.fromarray(cv2.cvtColor(annotated_image_bgr, cv2.COLOR_BGR2RGB))
+
+
         if os.path.isfile("PathSave.txt"):
             with open('PathSave.txt', 'r') as file:
                 content = file.read()
@@ -181,7 +184,7 @@ def resImage(img, indexT, indexD, offsetTop, offset_Down, with_Down):
                         except:
                             print("превышено число запросов")
 
-        path = "static/" + str(str(indexD) + " " + str(indexT) + " " + str(offsetTop) + " " + str(offset_Down) + " " + str(with_Down) + os.path.basename(img))
+        path = "static/" + str(str(indexD) + " " + str(indexT) + " " + str(with_Top) + " " + str(offsetX_Top) + " " + str(offsetDownX)+ "" + str(offsetTop) + " " + str(offset_Down) + " " + str(with_Down) + os.path.basename(img))
 
         with open('PathSave.txt', 'w') as file:
             file.write(path)

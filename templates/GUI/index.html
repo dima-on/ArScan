@@ -5,7 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
         let TopIndex = -1
+        let DownIndex = -1
+
         function StartSite() {
+        let Top = document.getElementById("Top")
+        let Down = document.getElementById("Down")
+        Down.style.display = "none"
+        Top.style.display = "none"
             console.log("dwa")
             fetch('/StartProgram', {
                 method: 'POST',
@@ -13,11 +19,17 @@
             })
                 .then(response => response.json())
                 .then(data => {
+                    let ImageArrayD = data.result_imageD;
+                    for (var D = 0; D < ImageArrayD.length; D++) {
+                        console.log(ImageArrayD[D])
+                        AddBlockDown(ImageArrayD[D], D)
+                    }
                     let ImageArray = data.result_image;
                     for (var i = 0; i < ImageArray.length; i++) {
                         console.log(ImageArray[i])
                         AddBlockTop(ImageArray[i], i)
                     }
+
                 })
 
 
@@ -37,30 +49,59 @@
             console.log(newDiv)
         }
 
+        function AddBlockDown(path, i) {
+            var newDiv = document.createElement("div")
+            var parentElement = document.querySelector(".DownChose .scrollable-container")
+            var newImage = document.createElement("img")
+            newImage.src = path
+            newImage.onclick = function () {
+                DownOn(i);
+            }
+            newDiv.classList.add("block")
+            newDiv.appendChild(newImage);
+            parentElement.appendChild(newDiv)
+            console.log(newDiv)
+        }
+
         function TopOn(Index) {
             TopIndex = Index
             console.log(Index)
+            ChangeTop()
+            uploadPhoto()
+        }
+
+        function DownOn(Index) {
+            DownIndex = Index
+            console.log(Index)
+            ChangeDown()
             uploadPhoto()
         }
     </script>
     <style>
+        .Up {
+            text-align: center;
+        }
+
         .Chose {
             display: inline-block;
+            margin-left: 30px;
         }
 
         .TopChose {
-            width: 150px;
+            width: 224px;
+            display: inline-block;
+
         }
 
         .Chose .TopChose .scrollable-container {
-            height: 200px;
+            height: 450px;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             white-space: nowrap;
         }
 
         .Chose .TopChose .scrollable-container::-webkit-scrollbar {
-            width: 5px;
+            width: 3px;
         }
 
         .Chose .TopChose .scrollable-container::-webkit-scrollbar-thumb {
@@ -74,11 +115,52 @@
         }
 
         .Chose .TopChose .scrollable-container .block {
-            display: block;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         .Chose .TopChose .scrollable-container .block img {
-            width: 100px;
+            display: block;
+            margin: auto;
+            width: 70%;
+            height: auto;
+        }
+
+        .DownChose {
+            width: 224px;
+            display: inline-block;
+        }
+
+        .Chose .DownChose .scrollable-container {
+            height: 450px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            white-space: nowrap;
+        }
+
+        .Chose .DownChose .scrollable-container::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .Chose .DownChose .scrollable-container::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 4px;
+
+        }
+
+        .Chose .DownChose .scrollable-container::-webkit-scrollbar-track {
+            background-color: transparent; /* Прозрачный фон полосы прокрутки */
+        }
+
+        .Chose .DownChose .scrollable-container .block {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .Chose .DownChose .scrollable-container .block img {
+            display: block;
+            margin: auto;
+            width: 70%;
             height: auto;
         }
 
@@ -88,63 +170,188 @@
                 width: 0;
             }
         }
-        .Phot{
+
+        .Phot {
             display: inline-block;
-            height: 350px;
-            width: 200px;
+            height: 536px;
+            width: 412px;
             overflow: hidden;
         }
-        .Phot img{
-            height: 350px;
+
+        .Phot img {
+            height: 536px;
             width: auto;
         }
+
+        .control {
+            margin-top: 50px;
+
+        }
+
+        .control .button {
+            display: flex; /* Делаем .control флекс-контейнером */
+            justify-content: center;
+        }
+
+        .control .button .min {
+            width: 48px;
+            height: 48px;
+            background: black;
+            color: white;
+            margin: 0 10px;
+            border: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 35px;
+            border-radius: 10px;
+
+
+        }
+
+        .Big {
+            width: 96px;
+            height: 48px;
+            background: black;
+            color: white;
+            border: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 35px;
+            margin: 0 10px;
+            border-radius: 10px;
+        }
+
+
+        .control .text h2 {
+            font-family: Georgia;
+        }
+
+
     </style>
     <title>Your Web App</title>
 </head>
 <body onload="StartSite()">
-<div class="Phot">
-    <img id="testImage"
-         src="https://scdn.comfy.ua/89fc351a-22e7-41ee-8321-f8a9356ca351/https://cdn.comfy.ua/media/catalog/product/1/4/1400621-453491-3.jpg/w_600"
-         alt="Your Image">
-
-</div>
-
-<div class="control">
-    <input id="test" type="file" name="photo" accept="image/*">
+<div class="Up">
+    <div class="Phot">
+        <img id="testImage"
+             src="https://scdn.comfy.ua/89fc351a-22e7-41ee-8321-f8a9356ca351/https://cdn.comfy.ua/media/catalog/product/1/4/1400621-453491-3.jpg/w_600"
+             alt="Your Image">
 
 
-    <button onclick="Add_offset()">Up</button>
-    <button onclick="Minuse_offset()">Down</button>
+    </div>
 
-    <button onclick="Add_offsetDown()">UpD</button>
-    <button onclick="Minuse_offsetDown()">DownD</button>
 
-    <button onclick="Add_With()">+</button>
-    <button onclick="Minuse_With()">-</button>
-</div>
-<div class="Chose">
-    <div class="TopChose">
+    <div class="Chose">
+        <div class="TopChose">
 
-        <div class="scrollable-container">
+            <div class="scrollable-container">
 
+
+            </div>
 
         </div>
 
+        <div class="DownChose">
+            <div class="scrollable-container">
+
+
+            </div>
+        </div>
     </div>
 
-    <div class="DownChose">
+    <div class="control">
+        <div class="text">
 
+            <h2>Розмістіть одяг по фігурі</h2>
+
+        </div>
+        <div id="Top" class="button">
+
+            <button class="min" onclick="Add_offset()">⬆</button>
+            <button class="min" onclick="Minuse_offset()">⬇</button>
+
+            <button class="min" onclick="Minuse_offsetxTop()">⬅</button>
+            <button class="min" onclick="Add_offsetxTop()">➡</button>
+
+            <button class="Big" onclick="Add_WithTop()">⬅➡</button>
+            <button class="Big" onclick="Minuse_WithTop()">➡⬅</button>
+
+
+        </div>
+        <div id="Down" class="button">
+
+            <button class="min" onclick="Add_offsetDown()">⬆</button>
+            <button class="min" onclick="Minuse_offsetDown()">⬇</button>
+
+            <button class="min" onclick="Minuse_offsetxDown()">⬅</button>
+            <button class="min" onclick="Add_offsetxDown()">➡</button>
+
+            <button class="Big" onclick="Add_WithDown()">⬅➡</button>
+            <button class="Big" onclick="Minuse_WithDown()">➡⬅</button>
+
+        </div>
+        <input id="test" type="file" name="photo" accept="image/*">
     </div>
 </div>
+
 
 </body>
 <script>
     let TopoffsetY = 0
+    let TopoffsetX = 0
     let DownoffsetY = 0
+    let DownoffsetX = 0
     let DownWith = 0
-    document.getElementById('test').addEventListener('change', function() {uploadPhoto()})
+    let UpWith = 0
+    document.getElementById('test').addEventListener('change', function () {
+        uploadPhoto()
+    })
+    document.getElementById('testImage').addEventListener('click', function (event) {
+        const fileInput = document.getElementById('test');
+        const file = fileInput.files[0];
+
+        if (file) {
+            let Phot = document.querySelector('.Phot');
+            let heightString = getComputedStyle(Phot).height; // Получаем строку с высотой (например, "500px")
+            let heightNumber = parseInt(heightString);
+            var image = document.getElementById('testImage')
+            var rect = image.getBoundingClientRect();
+            var y = event.clientY - rect.top; // Координата Y клика относительно изображения
+
+            if (y > heightNumber / 2) {
+                ChangeDown()
+            } else {
+                ChangeTop()
+            }
+        }
+
+    })
+
+
+
+    function ChangeDown() {
+        let Top = document.getElementById("Top")
+        let Down = document.getElementById("Down")
+        Down.style.display = "flex"
+        Top.style.display = "none"
+
+    }
+
+    function ChangeTop() {
+        let Top = document.getElementById("Top")
+        let Down = document.getElementById("Down")
+
+        Down.style.display = "none"
+        Top.style.display = "flex"
+
+    }
 
     function uploadPhoto() {
+
         const fileInput = document.getElementById('test');
         const file = fileInput.files[0];
 
@@ -152,9 +359,14 @@
             const formData = new FormData();
             formData.append('photo', file);
             formData.append('offset', TopoffsetY);
-            formData.append('offsetDown', DownoffsetY);
-            formData.append('with', DownWith);
+            formData.append('offsetX', TopoffsetX);
+            formData.append('UpWith', UpWith);
             formData.append('TopIndex', TopIndex);
+
+            formData.append('offsetDown', DownoffsetY);
+            formData.append('offsetXDown', DownoffsetX);
+            formData.append('DownWith', DownWith);
+            formData.append('DownIndex', DownIndex);
 
             fetch('/lick', {
                 method: 'POST',
@@ -181,6 +393,26 @@
         uploadPhoto()
     }
 
+    function Add_WithTop() {
+        UpWith += 50
+        uploadPhoto()
+    }
+
+    function Minuse_WithTop() {
+        UpWith -= 50
+        uploadPhoto()
+    }
+
+    function Add_offsetxTop() {
+        TopoffsetX += 1
+        uploadPhoto()
+    }
+
+    function Minuse_offsetxTop() {
+        TopoffsetX -= 1
+        uploadPhoto()
+    }
+
     function Add_offsetDown() {
         DownoffsetY++
         uploadPhoto()
@@ -191,13 +423,23 @@
         uploadPhoto()
     }
 
-    function Add_With() {
+    function Add_WithDown() {
         DownWith += 50
         uploadPhoto()
     }
 
-    function Minuse_With() {
+    function Minuse_WithDown() {
         DownWith -= 50
+        uploadPhoto()
+    }
+
+    function Add_offsetxDown() {
+        DownoffsetX += 1
+        uploadPhoto()
+    }
+
+    function Minuse_offsetxDown() {
+        DownoffsetX -= 1
         uploadPhoto()
     }
 </script>
