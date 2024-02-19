@@ -8,10 +8,10 @@
         let DownIndex = -1
 
         function StartSite() {
-        let Top = document.getElementById("Top")
-        let Down = document.getElementById("Down")
-        Down.style.display = "none"
-        Top.style.display = "none"
+            let Top = document.getElementById("Top")
+            let Down = document.getElementById("Down")
+            Down.style.display = "none"
+            Top.style.display = "none"
             console.log("dwa")
             fetch('/StartProgram', {
                 method: 'POST',
@@ -165,22 +165,23 @@
         }
 
 
-        @media screen and (max-width: 600px) {
-            .Chose .TopChose .scrollable-container::-webkit-scrollbar {
-                width: 0;
-            }
-        }
-
         .Phot {
             display: inline-block;
             height: 536px;
             width: 412px;
             overflow: hidden;
+            position: relative;
         }
 
         .Phot img {
             height: 536px;
             width: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+
         }
 
         .control {
@@ -230,6 +231,126 @@
             font-family: Georgia;
         }
 
+        #test {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: none;
+            opacity: 0;
+
+        }
+
+        .InputFile {
+            position: relative;
+            height: 44px;
+            width: 193px;
+            background: #000000;
+
+        }
+
+        .InputFile h1 {
+            position: relative;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            color: white;
+            font-size: 16px;
+            font-family: Georgia;
+
+        }
+
+        .CI {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        @media screen and (max-width: 600px) {
+            .Chose .TopChose .scrollable-container::-webkit-scrollbar {
+                width: 0;
+            }
+
+            .Chose .DownChose .scrollable-container::-webkit-scrollbar {
+                width: 0;
+            }
+
+            .Chose {
+                margin-left: 0;
+            }
+
+            .Phot {
+
+                height: 387px;
+                width: 145px;
+
+            }
+
+            .Phot img {
+                height: 387px;
+                width: auto;
+                left: -35%;
+
+            }
+
+            .TopChose {
+                width: 94px;
+
+            }
+
+            .DownChose {
+                width: 94px;
+            }
+
+            .Chose .DownChose .scrollable-container {
+                height: 384px;
+
+            }
+
+            .Chose .TopChose .scrollable-container {
+                height: 384px;
+
+            }
+
+            .control .button {
+                display: flex; /* Делаем .control флекс-контейнером */
+                justify-content: center;
+            }
+
+            .control .button .min {
+                width: 48px;
+                height: 48px;
+                background: black;
+                color: white;
+                margin: 0 2px;
+                border: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 35px;
+                border-radius: 10px;
+
+
+            }
+
+            .Big {
+                width: 96px;
+                height: 48px;
+                background: black;
+                color: white;
+                border: 0;
+                padding: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 35px;
+                margin: 0 2px;
+                border-radius: 10px;
+            }
+        }
 
     </style>
     <title>Your Web App</title>
@@ -294,7 +415,12 @@
             <button class="Big" onclick="Minuse_WithDown()">➡⬅</button>
 
         </div>
-        <input id="test" type="file" name="photo" accept="image/*">
+        <div class="CI">
+            <div class="InputFile">
+                <h1>Вибрати інше фото</h1>
+                <input id="test" type="file" name="photo" accept="image/*">
+            </div>
+        </div>
     </div>
 </div>
 
@@ -330,7 +456,6 @@
         }
 
     })
-
 
 
     function ChangeDown() {

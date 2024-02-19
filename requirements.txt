@@ -1,15 +1,5 @@
-<<<<<<< HEAD
-Flask
-opencv-python
-mediapipe
-Pillow
-numpy
-Gunicorn
-=======
-Flask
-opencv-python
-mediapipe
-Pillow
-numpy
-Gunicorn
->>>>>>> 8d020ac2cb8e4a7b094ef83bde4a2eca9224f83d
+Flask==3.0.1
+opencv-python==4.9.0.80
+mediapipe==0.10.9
+Pillow==10.2.0
+numpy==1.26.3
