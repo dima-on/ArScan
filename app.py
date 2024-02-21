@@ -18,6 +18,7 @@ def index():
 
 @app.route('/lick', methods=['POST'])
 def lick():
+    print("test")
     # Обработка загрузки фото
     uploaded_file = request.files['photo']
     offset_Top = request.form.get('offset')
