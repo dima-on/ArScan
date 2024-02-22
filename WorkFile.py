@@ -155,7 +155,7 @@ def resImage(img, indexT, indexD, offsetTop, offset_Down, with_Down, with_Top, o
         landmarks = results.pose_landmarks.landmark
 
 
-        mp.solutions.drawing_utils.draw_landmarks(annotated_image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
+        #mp.solutions.drawing_utils.draw_landmarks(annotated_image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
 
         annotated_image_bgr = cv2.cvtColor(annotated_image, cv2.COLOR_RGB2BGR)
         if indexT != -1:
