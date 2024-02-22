@@ -320,16 +320,15 @@
             }
 
             .control .button .min {
-                width: 48px;
-                height: 48px;
+                width: 30px;
+                height: 30px;
                 background: black;
                 color: white;
-                margin: 0 2px;
+                margin: 0 8px;
                 border: 0;
                 padding: 0;
                 display: flex;
-                justify-content: center;
-                align-items: center;
+
                 font-size: 35px;
                 border-radius: 10px;
 
@@ -337,17 +336,16 @@
             }
 
             .Big {
-                width: 96px;
-                height: 48px;
+                width: 60px;
+                height: 30px;
                 background: black;
                 color: white;
                 border: 0;
                 padding: 0;
                 display: flex;
-                justify-content: center;
-                align-items: center;
+
                 font-size: 35px;
-                margin: 0 2px;
+                margin: 0 8px;
                 border-radius: 10px;
             }
         }
@@ -392,27 +390,28 @@
         </div>
         <div id="Top" class="button">
 
-            <button class="min" onclick="Add_offset()">⬆</button>
-            <button class="min" onclick="Minuse_offset()">⬇</button>
+            <img class="min" onclick="Add_offset()" src="static/Photo/Other/Up.png" alt="">
+            <img class="min" onclick="Minuse_offset()" src="static/Photo/Other/Down.png" alt="">
 
-            <button class="min" onclick="Minuse_offsetxTop()">⬅</button>
-            <button class="min" onclick="Add_offsetxTop()">➡</button>
+            <img class="min" onclick="Minuse_offsetxTop()" src="static/Photo/Other/Left.png" alt="">
+            <img class="min" onclick="Add_offsetxTop()" src="static/Photo/Other/Right.png" alt="">
 
-            <button class="Big" onclick="Add_WithTop()">⬅➡</button>
-            <button class="Big" onclick="Minuse_WithTop()">➡⬅</button>
+            <img class="Big" onclick="Add_WithTop()" src="static/Photo/Other/Out.png" alt="">
+            <img class="Big" onclick="Minuse_WithTop()" src="static/Photo/Other/In.png" alt="">
 
 
         </div>
         <div id="Down" class="button">
+            <img class="min" onclick="Add_offsetDown()" src="static/Photo/Other/Up.png" alt="">
+            <img class="min" onclick="Minuse_offsetDown()" src="static/Photo/Other/Down.png" alt="">
 
-            <button class="min" onclick="Add_offsetDown()">⬆</button>
-            <button class="min" onclick="Minuse_offsetDown()">⬇</button>
+            <img class="min" onclick="Minuse_offsetxDown()" src="static/Photo/Other/Left.png" alt="">
+            <img class="min" onclick="Add_offsetxDown()" src="static/Photo/Other/Right.png" alt="">
 
-            <button class="min" onclick="Minuse_offsetxDown()">⬅</button>
-            <button class="min" onclick="Add_offsetxDown()">➡</button>
+            <img class="Big" onclick="Add_WithDown()" src="static/Photo/Other/Out.png" alt="">
+            <img class="Big" onclick="Minuse_WithDown()" src="static/Photo/Other/In.png" alt="">
 
-            <button class="Big" onclick="Add_WithDown()">⬅➡</button>
-            <button class="Big" onclick="Minuse_WithDown()">➡⬅</button>
+
 
         </div>
         <div class="CI">
