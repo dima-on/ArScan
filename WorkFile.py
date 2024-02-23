@@ -165,12 +165,7 @@ def resImage(img, indexT, indexD, offsetTop, offset_Down, with_Down, with_Top, o
         annotated_image = rgb_image.copy()
         landmarks = results.pose_landmarks.landmark
 
-<<<<<<< HEAD
-=======
 
-        #mp.solutions.drawing_utils.draw_landmarks(annotated_image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
-
->>>>>>> 9fa491bc6c52a7fd6b941d253ca8bcacbd01d0ac
         annotated_image_bgr = cv2.cvtColor(annotated_image, cv2.COLOR_RGB2BGR)
         if indexT != -1:
             Top_overlay_image_resized, Top_overlay_position = body_Detect(indexT, image, landmarks,
