@@ -1,12 +1,15 @@
+import time
+
 from flask import Flask, render_template, request, jsonify
+from PIL import Image
 import WorkFile
 import os
 
 
 app = Flask(__name__)
-def testIMG(img, inT, inD, offsetY, offset_Down, with_Down, with_Top, offsetX_Top, offsetDownX):
+def testIMG(img, inT, inD, offsetY, offset_Down, with_Down, with_Top, offsetX_Top, offsetDownX, t):
     app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-    return WorkFile.resImage(img, inT, inD, offsetY, offset_Down, with_Down, with_Top, offsetX_Top, offsetDownX)
+    return WorkFile.resImage(img, inT, inD, offsetY, offset_Down, with_Down, with_Top, offsetX_Top, offsetDownX, t)
 
 
 @app.route('/')
@@ -33,13 +36,12 @@ def lick():
 
     if uploaded_file.filename != '':
         # Сохраняем загруженное фото в папке uploads
-        upload_folder = 'static/'
-        os.makedirs(upload_folder, exist_ok=True)
-        uploaded_file.save(os.path.join(upload_folder, uploaded_file.filename))
+        upload_folder = 'static/Input/'
+        uploaded_file.save(upload_folder + uploaded_file.filename)
 
         path = upload_folder + uploaded_file.filename
         print(DownIndex)
-        im = testIMG(path, int(TopIndex), int(DownIndex), int(offset_Top), int(offset_Down), int(with_Down), int(with_Top), int(offsetX_Top), int(offset_DownX))
+        im = testIMG(path, int(TopIndex), int(DownIndex), int(offset_Top), int(offset_Down), int(with_Down), int(with_Top), int(offsetX_Top), int(offset_DownX), time.time())
 
 
     return jsonify({'result_image': im})

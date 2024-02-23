@@ -4,6 +4,7 @@ from PIL import Image
 import os
 import numpy as np
 import time
+import gc
 
 
 Down_Image_Path = ['static/Photo/Down/legs.png', 'static/Photo/Down/leggins-1.png']
@@ -139,12 +140,22 @@ def leg_Detect(Index, frame, landmarks, offset_Y, withDown, offsetXDown):
 
 
     return overlay_image_resized, overlay_position
-def resImage(img, indexT, indexD, offsetTop, offset_Down, with_Down, with_Top, offsetX_Top, offsetDownX):
-    startTime = time.time()
+def delAll():
+    filesRoot = os.listdir("static/")
+    for i in filesRoot:
+        if i != "Photo" and i != "Input":
+            path = "static/" + i
+            try:
+                os.remove(path)
+            except:
+                print(i)
+
+def resImage(img, indexT, indexD, offsetTop, offset_Down, with_Down, with_Top, offsetX_Top, offsetDownX, t):
+
     mp_pose = mp.solutions.pose
     pose = mp_pose.Pose()
-    image_path = img
-    image = cv2.imread(image_path)
+    image = cv2.imread(img)
+
 
     rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
@@ -154,14 +165,17 @@ def resImage(img, indexT, indexD, offsetTop, offset_Down, with_Down, with_Top, o
         annotated_image = rgb_image.copy()
         landmarks = results.pose_landmarks.landmark
 
-
-        mp.solutions.drawing_utils.draw_landmarks(annotated_image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
-
         annotated_image_bgr = cv2.cvtColor(annotated_image, cv2.COLOR_RGB2BGR)
         if indexT != -1:
-            Top_overlay_image_resized, Top_overlay_position= body_Detect(indexT, image, landmarks, Top_Offset_To_Y[indexT] + int(offsetTop), Top_With[indexT] + int(with_Top), Top_Offset_To_X[indexT] + int(offsetX_Top))
+            Top_overlay_image_resized, Top_overlay_position = body_Detect(indexT, image, landmarks,
+                                                                          Top_Offset_To_Y[indexT] + int(offsetTop),
+                                                                          Top_With[indexT] + int(with_Top),
+                                                                          Top_Offset_To_X[indexT] + int(offsetX_Top))
         if indexD != -1:
-            Down_overlay_image_resized, Down_overlay_position = leg_Detect(indexD, image, landmarks, Down_Offset_To_Y[indexD] + int(offset_Down), Down_With[indexD] + int(with_Down), Down_Offset_To_X[indexD] + int(offsetDownX))
+            Down_overlay_image_resized, Down_overlay_position = leg_Detect(indexD, image, landmarks,
+                                                                           Down_Offset_To_Y[indexD] + int(offset_Down),
+                                                                           Down_With[indexD] + int(with_Down),
+                                                                           Down_Offset_To_X[indexD] + int(offsetDownX))
 
         frame_pil = Image.fromarray(cv2.cvtColor(annotated_image_bgr, cv2.COLOR_BGR2RGB))
         if indexD != -1:
@@ -169,33 +183,22 @@ def resImage(img, indexT, indexD, offsetTop, offset_Down, with_Down, with_Top, o
         if indexT != -1:
             frame_pil.paste(Top_overlay_image_resized, Top_overlay_position, Top_overlay_image_resized)
 
-        annotated_image_bgr = cv2.cvtColor(np.array(frame_pil), cv2.COLOR_RGB2BGR)
+        path = "static/" + str(str(indexD) + " " + str(indexT) + " " + str(with_Top) + " " + str(offsetX_Top) + " " + str(offsetDownX) + "" + str(offsetTop) + " " + str(offset_Down) + " " + str(with_Down) + os.path.basename(img))
+        delAll()
+        frame_pil.save(path)
 
-        frame_pil = Image.fromarray(cv2.cvtColor(annotated_image_bgr, cv2.COLOR_BGR2RGB))
-
-
-        if os.path.isfile("PathSave.txt"):
-            with open('PathSave.txt', 'r') as file:
-                content = file.read()
-                if content != "":
-                    if os.path.isfile(content):
-                        try:
-                            os.remove(content)
-                        except:
-                            print("превышено число запросов")
-
-        path = "static/" + str(str(indexD) + " " + str(indexT) + " " + str(with_Top) + " " + str(offsetX_Top) + " " + str(offsetDownX)+ "" + str(offsetTop) + " " + str(offset_Down) + " " + str(with_Down) + os.path.basename(img))
-
-        with open('PathSave.txt', 'w') as file:
-            file.write(path)
-
-        frame_pil.save(path)     
         if os.path.isfile(img):
             try:
                 os.remove(img)
             except:
                 print()
-        print(time.time() - startTime)
+        print(time.time() - t)
+        pose.close()
+
         return path
     else:
         os.remove(img)
+        pose.close()
+
+
+
