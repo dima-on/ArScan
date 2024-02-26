@@ -162,7 +162,12 @@ def resImage(img, indexT, indexD, offsetTop, offset_Down, with_Down, with_Top, o
 
     if results.pose_landmarks:
         landmarks = results.pose_landmarks.landmark
+<<<<<<< HEAD
         annotated_image = rgb_image.copy()
+=======
+
+
+>>>>>>> 162b60bfac153ee7aa258aba12079f8d96e3ba73
         annotated_image_bgr = cv2.cvtColor(annotated_image, cv2.COLOR_RGB2BGR)
 
         with Image.fromarray(cv2.cvtColor(annotated_image_bgr, cv2.COLOR_BGR2RGB)) as frame_pil:
