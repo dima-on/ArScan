@@ -1,9 +1,7 @@
 import time
-
 from flask import Flask, render_template, request, jsonify
-from PIL import Image
 import WorkFile
-import os
+
 
 
 app = Flask(__name__)
@@ -25,6 +23,7 @@ def lick():
     # Обработка загрузки фото
     uploaded_file = request.files['photo']
     offset_Top = request.form.get('offset')
+    Data = request.form.get('photoData')
     offsetX_Top = request.form.get('offsetX')
     with_Top = request.form.get('UpWith')
     TopIndex = request.form.get('TopIndex')
@@ -34,7 +33,12 @@ def lick():
     with_Down = request.form.get('DownWith')
     DownIndex = request.form.get('DownIndex')
 
+    print("end")
+
+
     if uploaded_file.filename != '':
+
+
         # Сохраняем загруженное фото в папке uploads
         upload_folder = 'static/Input/'
         uploaded_file.save(upload_folder + uploaded_file.filename)
@@ -53,4 +57,4 @@ def StartAll():
     Down_Image_Path = WorkFile.Down_Image_Path
     return jsonify({'result_image': Top_Image_Path, 'result_imageD': Down_Image_Path})
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=5000)

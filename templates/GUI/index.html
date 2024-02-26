@@ -354,6 +354,7 @@
     <title>Your Web App</title>
 </head>
 <body onload="StartSite()">
+
 <div class="Up">
     <div class="Phot">
         <img id="testImage"
@@ -410,7 +411,6 @@
 
             <img class="Big" onclick="Add_WithDown()" src="static/Photo/Other/Out.png" alt="">
             <img class="Big" onclick="Minuse_WithDown()" src="static/Photo/Other/In.png" alt="">
-
 
 
         </div>
@@ -478,10 +478,14 @@
 
         const fileInput = document.getElementById('test');
         const file = fileInput.files[0];
-
+        const fileUrl = fileInput.value;
+        console.log(fileUrl)
+        const fileData = 0
         if (file) {
             const formData = new FormData();
             formData.append('photo', file);
+            formData.append('photoData', fileData);
+
             formData.append('offset', TopoffsetY);
             formData.append('offsetX', TopoffsetX);
             formData.append('UpWith', UpWith);
@@ -506,6 +510,7 @@
         }
 
     }
+
 
     function Add_offset() {
         TopoffsetY++
