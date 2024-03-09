@@ -18,7 +18,7 @@ Top_Offset_To_X = [0, -2, -1, -2, -3, 0]
 
 Top_With = [1050, 1150, 1300, 1280, 400, 1000]
 Top_Height = [550, 550, 1000, 820, 300, 500]
-Top_HeightMult = [0, 0, 0, 0, 0, 5]
+Top_HeightMult = [0, 0, 0.2, 0, 0, 5]
 
 
 Down_Offset_To_Y = [-30, -10]
