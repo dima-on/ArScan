@@ -80,7 +80,7 @@ def body_Detect(Index, frame, landmarks, offset_Y, withTop, offsetXTop):
     ySizeForNew = int(
         ((xSizeForNew * ClothYsize) / ClothXsize) + ((xSizeForNew * ClothYsize) / ClothXsize) * Top_HeightMult[Index])
 
-    new_size = (max(100, xSizeForNew), max(100, ySizeForNew))
+    new_size = (xSizeForNew, ySizeForNew)
 
     offsetX = int(((distanceX / 100) * offsetXTop) * ProcentSizeXOffSet)
     offsetY = int(((distanceY / 100) * offset_Y) * ProcentSizeYOffSet)
